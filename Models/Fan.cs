@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -17,14 +18,27 @@ namespace ShaulisBlog.Models
 
         public int ID { get; set; }
 
-        public string firstName { get; set; }
+        [Display(Name = "Fan firs-tname")]
+        [DataType(DataType.Text)]
+        public string FirstName { get; set; }
 
-        public string lastName { get; set; }
+        [Display(Name = "Fan last-name")]
+        [DataType(DataType.Text)]
+        public string LastName { get; set; }
 
-        public string gender { get; set; }
+        [Display(Name = "Fan gender")]
+        [DataType(DataType.Custom)]
+        public string Gender { get; set; }
 
-        public DateTime birthDate { get; set; }
 
-        public int clubSeniority { get; set; }
+        [Display(Name = "Fan birthdate")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
+        public DateTime BirthDate { get; set; }
+
+        [Display(Name = "Fan seniority")]
+        [DataType(DataType.Currency)]
+        public int ClubSeniority { get; set; }
     }
 }
