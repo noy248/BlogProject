@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -47,7 +47,7 @@ namespace ShaulisBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,firstName,lastName,gender,birthDate,clubSeniority")] Fan fan)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Gender,BirthDate,ClubSeniority")] Fan fan)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace ShaulisBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,firstName,lastName,gender,birthDate,clubSeniority")] Fan fan)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,BirthDate,ClubSeniority")] Fan fan)
         {
             if (ModelState.IsValid)
             {
