@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -12,12 +13,17 @@ namespace ShaulisBlog.Models
 
         public Post()
         {
-            this.ID = countIDs;
+            this.PostID = countIDs;
             countIDs++;
+
+            this.Comments = new List<Comment>();
         }
 
-        [Required]
-        public int ID { get; set; }
+
+        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ConcurrencyCheck]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int PostID { get; set; }
 
         [Display(Name = "Post title")]
         [DataType(DataType.Text)]
@@ -25,6 +31,7 @@ namespace ShaulisBlog.Models
 
         [Display(Name = "Author name")]
         [DataType(DataType.Text)]
+        [StringLength(80, ErrorMessage = "First name cannot be longer than 80 characters.")]
         public string Author { get; set; }
 
         [Display(Name = "Author website address")]
@@ -34,6 +41,7 @@ namespace ShaulisBlog.Models
         [Display(Name = "Post writing Date")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [ConcurrencyCheck]
         public DateTime PostDate { get; set; }
 
         [Display(Name = "Post text")]
@@ -44,7 +52,11 @@ namespace ShaulisBlog.Models
         [DataType(DataType.Text)]
         public string Photos { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        [Display(Name = "Post video")]
+        [DataType(DataType.Text)]
+        public string Video { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
 
     }
 }
