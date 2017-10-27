@@ -1,4 +1,4 @@
-﻿
+
 
 /*205634645, 312497720*/
 
@@ -24,7 +24,6 @@ header, footer, section, aside, nav, article {
 body {
     margin: 0 auto;
     padding: 22px 0;
-    width: 940px;
     font: 13px/22px Helvetica, Arial, sans-serif;
     background: #F0F0F0;
 }
@@ -98,16 +97,18 @@ nav {
             float: left;
         }
 
-            nav ul li a {
-                display: block;
-                margin-right: 20px;
-                width: 140px;
-                font-size: 14px;
-                line-height: 44px;
-                text-align: center;
-                text-decoration: none;
-                color: #777;
-            }
+
+
+nav ul li a {
+    display: block;
+    margin-right: 20px;
+    width: 140px;
+    font-size: 14px;
+    line-height: 44px;
+    text-align: center;
+    text-decoration: none;
+    color: #777;
+}
 
                 nav ul li a:hover {
                     color: #fff;
@@ -177,19 +178,17 @@ nav {
 /*------------------------------
 =CONTENT AREA AND SIDEBAR LAYOUT
 ------------------------------*/
-#content {
-    display: table;
-}
 
 #mainContent {
     display: table-cell;
-    width: 620px;
     padding-right: 22px;
+    width: 80%;
 }
 
 aside {
     display: table-cell;
-    width: 300px;
+    width: 20%;
+    /*padding-right: 0px;*/
     background: url("../images/sidebar_background.png") top left;
 }
 
@@ -200,7 +199,6 @@ aside {
     aside section {
         margin: 22px 0 0 22px;
         padding: 11px 22px;
-        /*background: url("images/sidebar_section_background.png") repeat-x;*/
         /*  THE 3 PART IN EXERCISE */
         background: linear-gradient(0,#ebebeb,#e4e4e4,#dfdfdf);
         /* Border-radius not implemented yet */
@@ -209,7 +207,7 @@ aside {
     }
 
         aside section ul {
-            margin: 0 0 0 22px;
+            margin: 0 0 0 10px;
             list-style: none;
         }
 
@@ -226,18 +224,19 @@ aside {
 /*------------------------------
 =BLOG POST
 ------------------------------*/
-.blogPost header p, .blogPost header p a {
+.blogPost header p, .blogPost header p a, .blogcomment header p, .blogcomment header p a {
     font-size: 14px;
     font-style: italic;
     color: #777;
 }
 
-    .blogPost header p a:hover {
-        text-decoration: none;
-        color: #000;
-    }
+.blogPost header p a:hover, .blogcomment header p a:hover 
+{
+    text-decoration: none;
+    color: #000;
+}
 
-.blogPost div {
+.blogPost div , .blogcomment div{
     /* Column-count not implemented yet */
     -moz-column-count: 2;
     -webkit-column-count: 2;
@@ -246,14 +245,14 @@ aside {
     -webkit-column-gap: 22px;
 }
 
-.blogPost img {
+.blogPost img, .blogcomment img {
     margin: 22px 0;
     -webkit-box-shadow: 3px 3px 7px #777;
 }
 
-.blogPost video {
+.blogPost video , .blogcomment video{
     margin: 12px 0;
-    width: 100%;
+    /*width: 100%;*/
     height: auto;
     -webkit-box-shadow: 3px 3px 7px #777;
 }
@@ -404,4 +403,26 @@ footer {
     ------------------------------*/
 .fan_table th {
     padding: 0 30px 0 0;
+}
+
+
+/*
+ views
+*/
+.obj_action_btn{
+
+ background-color: lawngreen;
+ color: black; 
+ text-align: center;
+ display: inline-block; 
+ margin-right: 20px;
+ font-size: 16px;
+}
+
+.button-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    color: black;
 }

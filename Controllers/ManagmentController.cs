@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -18,7 +18,7 @@ namespace ShaulisBlog.Controllers
         // GET: Managment
         public ActionResult Index()
         {
-            return View(db._comments.ToList());
+            return View(db._posts.ToList());
         }
 
         // GET: Managment/Details/5
@@ -28,12 +28,13 @@ namespace ShaulisBlog.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db._comments.Find(id);
-            if (comment == null)
+            Post post = db._posts.Find(id);
+            IEnumerable<Comment> lsComment = post.Comments;
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(lsComment);
         }
 
         // GET: Managment/Create
@@ -47,16 +48,18 @@ namespace ShaulisBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,PostID,Commenter,CommenterSiteAddr,Text,CommentDate")] Comment comment)
+        public ActionResult Create([Bind(Include = "PostID,Title,Author,AuthorSiteAddr,PostText,Photos,Video")] Post post)
         {
             if (ModelState.IsValid)
             {
-                db._comments.Add(comment);
+                post.PostDate = DateTime.Now.Date;
+
+                db._posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(comment);
+            return View(post);
         }
 
         // GET: Managment/Edit/5
@@ -66,12 +69,12 @@ namespace ShaulisBlog.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db._comments.Find(id);
-            if (comment == null)
+            Post post = db._posts.Find(id);
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(post);
         }
 
         // POST: Managment/Edit/5
@@ -79,16 +82,18 @@ namespace ShaulisBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,PostID,Commenter,CommenterSiteAddr,Text,CommentDate")] Comment comment)
+        public ActionResult Edit([Bind(Include = "PostID,Title,Author,AuthorSiteAddr,PostText,Photos")] Post post)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comment).State = EntityState.Modified;
+                post.PostDate = DateTime.Now.Date;
+                db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(comment);
+            return View(post);
         }
+
 
         // GET: Managment/Delete/5
         public ActionResult Delete(int? id)
@@ -97,12 +102,12 @@ namespace ShaulisBlog.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db._comments.Find(id);
-            if (comment == null)
+            Post post = db._posts.Find(id);
+            if (post == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            return View(post);
         }
 
         // POST: Managment/Delete/5
@@ -110,8 +115,8 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Comment comment = db._comments.Find(id);
-            db._comments.Remove(comment);
+            Post post = db._posts.Find(id);
+            db._posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

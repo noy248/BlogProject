@@ -1,82 +1,65 @@
-﻿@model ShaulisBlog.Models.Post
+@model ShaulisBlog.Models.Post
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Blog";
 }
 
-<h2>Edit</h2>
+<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Post</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+<h2>Blog Post</h2>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+ <section>
+        <article class="blogPost">
+            <header>
+                <h4>@Html.DisplayFor(model => model.Title)</h4>
+                <p>
+                    Posted on <time datetime=@Html.DisplayFor(model => model.PostDate)>@Html.DisplayFor(model => model.PostDate)</time>
+                    by <a href=@Html.DisplayFor(model => model.AuthorSiteAddr) ></a> : @Html.DisplayFor(model => model.Author)
+                    <a href="#comments"> @Html.DisplayFor(model => model.Comments.Count) comments</a>
+                </p>
+            </header>
+            <div class="post_body">
+                <p>@Html.DisplayFor(model => model.PostText)</p>
+
+                @if (@Html.DisplayFor(model => model.Video).ToString() != string.Empty)
+                {
+                    <video controls="controls">
+                        <source src="@Html.DisplayFor(model => model.Video)" type="video/mp4" />
+                    </video>
+                }
+
+                @if (@Html.DisplayFor(model => model.Photos).ToString() != string.Empty)
+                {
+                   <img src="@Html.DisplayFor(model => model.Photos)" alt="Flower" />
+                }
             </div>
-        </div>
+        </article>
+ 
+        <!--The comment of the post under the post section-->
+        @if (Model.Comments != null)
+        {
+            foreach (var comm in Model.Comments)
+            {
+                    <h3>Comments</h3>
+                    <article class="blogcomment">
+                        <header>
+                            <a href="#">@Html.DisplayFor(modelitem => comm.Title)</a>
+                            on <time datetime=@Html.DisplayFor(modelitem => comm.CommentDate)>@Html.DisplayFor(modelitem => comm.CommentDate)</time>
+                            by <a href="@Html.DisplayFor(modelitem => comm.CommenterSiteAddr)">@Html.DisplayFor(modelitem => comm.Commenter)</a>
+                        </header>
+                        <div></div>
+                        <p>@Html.DisplayFor(modelitem => comm.Text)</p>
+                    </article>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Delete", "Blog", new { id = comm.CommentID })'">Delete comment</button>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AuthorSiteAddr, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AuthorSiteAddr, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AuthorSiteAddr, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            }
+        }
+</section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PostDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PostDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PostDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PostText, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PostText, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PostText, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Photos, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Photos, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Photos, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Create", "Blog", new { id = Model.PostID })'">Add a new comment</button>
+<button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Managment", "Go to posts list")'">Go to posts list</button>

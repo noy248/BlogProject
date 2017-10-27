@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -20,7 +20,7 @@
             <nav>
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Blog", "Index", "Blog")</li>
-                    <li>@Html.ActionLink("About", "Index", "Blog")</li>
+                    <li>@Html.ActionLink("Managment", "Index", "Managment")</li>
                     <li>@Html.ActionLink("Fans Club", "Index", "FansClub")</li>
                     <li>@Html.ActionLink("Contact", "Index", "Blog")</li>
                     <li class="subscribe">
@@ -46,17 +46,15 @@
 
 
     <!--The body content-->
-    <div class="container body-content">
+    <div class="body-content">
 
         <!--The main render content-->
         <div id="mainContent">
             @RenderBody()
         </div>
 
-
-
         <!--the side options-->
-        <aside>
+        <aside class="side_bar">
             <section>
                 <header>
                     <h3>Categories</h3>

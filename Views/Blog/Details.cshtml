@@ -1,66 +1,37 @@
-﻿@model ShaulisBlog.Models.Post
+@model ShaulisBlog.Models.Comment
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Update comment";
 }
+<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-<h2>Details</h2>
+
+<h2>Comment Details</h2>
 
 <div>
-    <h4>Post</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AuthorSiteAddr)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AuthorSiteAddr)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PostDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PostDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PostText)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PostText)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Photos)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Photos)
-        </dd>
-
-    </dl>
+    <article class="blogPost">
+        <header>
+            <h2>@Html.DisplayFor(model => model.Title)</h2>
+            <p>
+                Posted on <time datetime=@Html.DisplayFor(model => model.CommentDate)>@Html.DisplayFor(model => model.CommentDate)</time>
+                by <a href=@Html.DisplayFor(model => model.CommenterSiteAddr)></a> -@Html.DisplayFor(model => model.Commenter)
+            </p>
+        </header>
+        <div class="post_body">
+            <p>@Html.DisplayFor(model => model.Text)</p>
+        </div>
+    </article>
+    
 </div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    <button class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect " onclick="location.href='@Url.Action("Edit", "Managment", new { id = Model.CommentID  })'">Edit Comment</button>
+    <button class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Blog")'">Back to List</button>
 </p>
+
+
+
