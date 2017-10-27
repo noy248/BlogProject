@@ -1,7 +1,7 @@
-@model ShaulisBlog.Models.Comment
+@model ShaulisBlog.Models.Post
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Blog";
 }
 
 <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
@@ -10,69 +10,56 @@
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<h2>Blog Post</h2>
 
-    <div class="form-horizontal">
-        <h4>Edit comment</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => Model.CommentID)
+ <section>
+        <article class="blogPost">
+            <header>
+                <h4>@Html.DisplayFor(model => model.Title)</h4>
+                <p>
+                    Posted on <time datetime=@Html.DisplayFor(model => model.PostDate)>@Html.DisplayFor(model => model.PostDate)</time>
+                    by <a href=@Html.DisplayFor(model => model.AuthorSiteAddr) ></a> : @Html.DisplayFor(model => model.Author)
+                    <a href="#comments"> @Html.DisplayFor(model => model.Comments.Count) comments</a>
+                </p>
+            </header>
+            <div class="post_body">
+                <p>@Html.DisplayFor(model => model.PostText)</p>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @if (@Html.DisplayFor(model => model.Video).ToString() != string.Empty)
+                {
+                    <video controls="controls">
+                        <source src="@Html.DisplayFor(model => model.Video)" type="video/mp4" />
+                    </video>
+                }
+
+                @if (@Html.DisplayFor(model => model.Photos).ToString() != string.Empty)
+                {
+                   <img src="@Html.DisplayFor(model => model.Photos)" alt="Flower" />
+                }
             </div>
-        </div>
+        </article>
+ 
+        <!--The comment of the post under the post section-->
+        @if (Model.Comments != null)
+        {
+            foreach (var comm in Model.Comments)
+            {
+                    <h3>Comments</h3>
+                    <article class="blogcomment">
+                        <header>
+                            <a href="#">@Html.DisplayFor(modelitem => comm.Title)</a>
+                            on <time datetime=@Html.DisplayFor(modelitem => comm.CommentDate)>@Html.DisplayFor(modelitem => comm.CommentDate)</time>
+                            by <a href="@Html.DisplayFor(modelitem => comm.CommenterSiteAddr)">@Html.DisplayFor(modelitem => comm.Commenter)</a>
+                        </header>
+                        <div></div>
+                        <p>@Html.DisplayFor(modelitem => comm.Text)</p>
+                    </article>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Commenter, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Commenter, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Commenter, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Delete", "Blog", new { id = comm.CommentID })'">Delete comment</button>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CommenterSiteAddr, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CommenterSiteAddr, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CommenterSiteAddr, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            }
+        }
+</section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CommentDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CommentDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CommentDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect" />
-            </div>
-        </div>
-    </div>
-}
-
-<div class="button-row">
-    <button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Blog")'">Back to List</button>
-</div>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Create", "Blog", new { id = Model.PostID })'">Add a new comment</button>
+<button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Managment", "Go to posts list")'">Go to posts list</button>
