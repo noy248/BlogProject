@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ShaulisBlog.DAL;
 using ShaulisBlog.Models;
+using System.Data.Entity.Core.Objects;
 
 namespace ShaulisBlog.Controllers
 {
@@ -16,12 +17,32 @@ namespace ShaulisBlog.Controllers
         private DBContext db = new DBContext();
 
         // GET: Blog
-        public ActionResult Index()
+        public ActionResult Index(int? postID)
         {
-            return View(db._posts.ToList());
+            List<Post> lsPosts =  db._posts.ToList();
+
+            // The default page of the blog 
+             if (postID == null)
+             {
+                //`return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(lsPosts.First());
+             }
+
+             // getting the specific post if specified
+             Post post = db._posts.Find(postID);
+             if (post == null)
+             {
+                 return HttpNotFound();
+             }
+
+            return View(post);
         }
 
-        // GET: Blog/Details/5
+        /// <summary>
+        ///   GET: Blog/Details/5
+        /// </summary>
+        /// <param name="id">the current post id to show all of its details - only the post</param>
+        /// <returns>the post itself</returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,82 +57,133 @@ namespace ShaulisBlog.Controllers
             return View(post);
         }
 
-        // GET: Blog/Create
-        public ActionResult Create()
+     
+        /// <summary>
+        /// Blog/Create
+        /// </summary>
+        /// <param name="ID">The id of a given post and adding it a new comment</param>
+        /// <returns>The new comment </returns>
+        public ActionResult Create(int ID)
         {
-            return View();
+            Comment comm = new Comment();
+            comm.PostID = ID;
+            Post post = db._posts.Find(comm.PostID);
+            comm.CommentPost = post;
+            comm.CommentDate = DateTime.Now.Date;
+
+            return View(comm);
         }
 
-        // POST: Blog/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        ///  POST: Blog/Create
+        ///  To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        ///  more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /// </summary>
+        /// <param name="comm">getting the comment that created</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,Author,AuthorSiteAddr,PostDate,PostText,Photos")] Post post)
+        public ActionResult Create([Bind(Include = "CommentID,PostID,Title,Commenter,CommenterSiteAddr,Text")] Comment comm)
         {
+            // if the giving vomment valid adding the relavant date and post 
+            // adding the new comment
             if (ModelState.IsValid)
             {
-                db._posts.Add(post);
-                db.SaveChanges();
+                db.Entry(comm).State = EntityState.Modified;
+
+               
+
+                try
+                {
+                    db._comments.Add(comm);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Conflict, e.Message);
+                }
+               
                 return RedirectToAction("Index");
             }
 
-            return View(post);
+            return View(comm);
         }
 
-        // GET: Blog/Edit/5
+        /// <summary>
+        /// GET: Blog/Edit/5
+        /// editing the comment given in the id
+        /// </summary>
+        /// <param name="id"> the comment id</param>
+        /// <returns>the comment if exist</returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db._posts.Find(id);
-            if (post == null)
+
+            Comment comment = db._comments.Find(id);
+
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(post);
+            return View(comment);
         }
 
-        // POST: Blog/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /// <summary>
+        /// editing the giving comment 
+        /// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        /// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,Author,AuthorSiteAddr,PostDate,PostText,Photos")] Post post)
+        public ActionResult Edit([Bind(Include = "CommentID,PostID,Title,Commenter,CommenterSiteAddr,Text")] Comment comm)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
+                comm.CommentDate = DateTime.Now.Date;
+                db.Entry(comm).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(post);
+            return View(comm);
         }
 
-        // GET: Blog/Delete/5
+        /// <summary>
+        /// finding and showing the comment to delete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db._posts.Find(id);
-            if (post == null)
+            Comment comm = db._comments.Find(id);
+            if (comm == null)
             {
                 return HttpNotFound();
             }
-            return View(post);
+            return View(comm);
         }
 
-        // POST: Blog/Delete/5
+       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        /// <summary>
+        /// deleting the given comment 
+        /// </summary>
+        /// <param name="id">the id of the comment</param>
+        /// <returns></returns>
         public ActionResult DeleteConfirmed(int id)
         {
-            Post post = db._posts.Find(id);
-            db._posts.Remove(post);
+            Comment comm = db._comments.Find(id);
+            db._comments.Remove(comm);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
