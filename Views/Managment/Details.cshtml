@@ -1,58 +1,41 @@
-﻿@model ShaulisBlog.Models.Comment
+@model  IEnumerable<ShaulisBlog.Models.Comment>
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 <div>
-    <h4>Comment</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+  @foreach (var item in Model)
+  {
+    <article class="blogcomment">
+        <header>
+            <h2>@Html.DisplayFor(model => item.Title)</h2>
+            <p>
+                Posted on <time datetime=@Html.DisplayFor(model => item.CommentDate)>@Html.DisplayFor(model => item.CommentDate)</time>
+                by <a href=@Html.DisplayFor(model => item.CommenterSiteAddr)></a> -@Html.DisplayFor(model => item.Commenter)
+            </p>
+        </header>
+        <div class="post_body">
+            <p>@Html.DisplayFor(model => item.Text)</p>
+        </div>
+    </article>
+  
+    <div class="button-row">
+        <button class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect " onclick="location.href='@Url.Action("Edit", "Blog", new { id = item.CommentID })'">Edit comment</button>
+        <button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Delete","Blog", new { id = item.CommentID })'">Delete comment</button>
+        <button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Details", "Blog", new { id = item.CommentID })'">View comment </button>
+    </div>
+  }
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Commenter)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Commenter)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CommenterSiteAddr)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CommenterSiteAddr)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Text)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CommentDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CommentDate)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="button-row">
+    <button class="mdl-button mdl-js-button mdc-button--dense mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Managment")'">Back to List</button>
+</div>
+
