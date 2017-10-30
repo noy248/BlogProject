@@ -99,16 +99,16 @@ nav {
 
 
 
-nav ul li a {
-    display: block;
-    margin-right: 20px;
-    width: 140px;
-    font-size: 14px;
-    line-height: 44px;
-    text-align: center;
-    text-decoration: none;
-    color: #777;
-}
+            nav ul li a {
+                display: block;
+                margin-right: 20px;
+                width: 140px;
+                font-size: 14px;
+                line-height: 44px;
+                text-align: center;
+                text-decoration: none;
+                color: #777;
+            }
 
                 nav ul li a:hover {
                     color: #fff;
@@ -134,8 +134,7 @@ nav ul li a {
     position: relative;
     margin-top: 66px;
     padding: 44px;
-    /*	background: #467612 url("images/intro_background.png") repeat-x;*/
-    /*  THE 3 PART IN EXERCISE */
+
     background: linear-gradient(0,#467612,#85b111,#b2db10);
     /* Background-size not implemented yet */
     -webkit-background-size: 100%;
@@ -224,19 +223,18 @@ aside {
 /*------------------------------
 =BLOG POST
 ------------------------------*/
-.blogPost header p, .blogPost header p a, .blogcomment header p, .blogcomment header p a {
+.blogPost header p, .blogPost header p a, .blogComment header p, .blogcomment header p a {
     font-size: 14px;
     font-style: italic;
     color: #777;
 }
 
-.blogPost header p a:hover, .blogcomment header p a:hover 
-{
-    text-decoration: none;
-    color: #000;
-}
+    .blogPost header p a:hover, .blogcomment header p a:hover {
+        text-decoration: none;
+        color: #000;
+    }
 
-.blogPost div , .blogcomment div{
+.blogPost div, .blogcomment div {
     /* Column-count not implemented yet */
     -moz-column-count: 2;
     -webkit-column-count: 2;
@@ -250,7 +248,7 @@ aside {
     -webkit-box-shadow: 3px 3px 7px #777;
 }
 
-.blogPost video , .blogcomment video{
+.blogPost video, .blogcomment video {
     margin: 12px 0;
     /*width: 100%;*/
     height: auto;
@@ -409,14 +407,13 @@ footer {
 /*
  views
 */
-.obj_action_btn{
-
- background-color: lawngreen;
- color: black; 
- text-align: center;
- display: inline-block; 
- margin-right: 20px;
- font-size: 16px;
+.obj_action_btn {
+    background-color: lawngreen;
+    color: black;
+    text-align: center;
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 16px;
 }
 
 .button-row {
