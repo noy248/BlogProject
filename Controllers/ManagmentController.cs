@@ -6,10 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using ShaulisBlog.DAL;
-using ShaulisBlog.Models;
+using TryAgain.DAL;
+using TryAgain.Models;
 
-namespace ShaulisBlog.Controllers
+namespace BlogProject.Controllers
 {
     public class ManagmentController : Controller
     {
@@ -34,6 +34,7 @@ namespace ShaulisBlog.Controllers
             {
                 return HttpNotFound();
             }
+           
             return View(lsComment);
         }
 
@@ -48,12 +49,11 @@ namespace ShaulisBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostID,Title,Author,AuthorSiteAddr,PostText,Photos,Video")] Post post)
+        public ActionResult Create([Bind(Include = "PostID,Title,Author,AuthorSiteAddr,PostDate,PostText")] Post post)
         {
             if (ModelState.IsValid)
             {
                 post.PostDate = DateTime.Now.Date;
-
                 db._posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,7 +82,7 @@ namespace ShaulisBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostID,Title,Author,AuthorSiteAddr,PostText,Photos")] Post post)
+        public ActionResult Edit([Bind(Include = "PostID,Title,Author,AuthorSiteAddr,PostDate,PostText")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,6 @@ namespace ShaulisBlog.Controllers
             }
             return View(post);
         }
-
 
         // GET: Managment/Delete/5
         public ActionResult Delete(int? id)
@@ -116,6 +115,10 @@ namespace ShaulisBlog.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Post post = db._posts.Find(id);
+            List<Comment> comm = db._comments.Where((item) =>(item.PostID == id)).ToList();
+
+            db._comments.RemoveRange(comm);
+      
             db._posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");

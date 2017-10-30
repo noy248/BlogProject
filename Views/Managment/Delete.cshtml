@@ -1,4 +1,4 @@
-@model ShaulisBlog.Models.Post
+@model TryAgain.Models.Post
 
 @{
     ViewBag.Title = "Delete";
@@ -21,34 +21,24 @@
                 by <a href=@Html.DisplayFor(model => model.AuthorSiteAddr)></a> -@Html.DisplayFor(model => model.Author)
                 @if (Model.Comments != null)
                 {
-                    <a href = "@Url.Action("Details", "Managmetn", new { id = Model.PostID })">@Html.DisplayFor(modelitem => Model.Comments.Count) comments </a>
+                    <a href="@Url.Action("Details", "Managmetn", new { id = Model.PostID })">@Html.DisplayFor(modelitem => Model.Comments.Count) comments </a>
                 }
             </p>
         </header>
         <div class="post_body">
             <p>@Html.DisplayFor(model => model.PostText)</p>
 
-          <!--@if (@Html.DisplayFor(model => model.Video).ToString() != string.Empty)
-            {
-                <video controls="controls">
-                    <source src="@Html.DisplayFor(model => model.Video)" type="video/mp4" />
-                </video>
-            }
-
-            @if (@Html.DisplayFor(model => model.Photos).ToString() != string.Empty)
-            {
-                <img src="@Html.DisplayFor(model => model.Photos)" alt="@Html.DisplayName(Model.Photos)" />
-            }-->  
         </div>
     </article>
 
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect" />
-                <button class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Management")'">Back to List</button>
+            <input type="submit" value="Delete" class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect" />
+            <button class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect " onclick="location.href='@Url.Action("Index", "Management")'">Back to List</button>
         </div>
     }
 

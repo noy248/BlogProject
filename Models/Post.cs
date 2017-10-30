@@ -20,14 +20,15 @@ namespace ShaulisBlog.Models
         }
 
 
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         [ConcurrencyCheck]
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //  [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PostID { get; set; }
 
         [Display(Name = "Post title")]
         [DataType(DataType.Text)]
-        public string   Title { get; set; }
+        public string Title { get; set; }
 
         [Display(Name = "Author name")]
         [DataType(DataType.Text)]
@@ -41,20 +42,11 @@ namespace ShaulisBlog.Models
         [Display(Name = "Post writing Date")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [ConcurrencyCheck]
         public DateTime PostDate { get; set; }
 
         [Display(Name = "Post text")]
         [DataType(DataType.MultilineText)]
         public string PostText { get; set; }
-
-        [Display(Name = "Post photo")]
-        [DataType(DataType.Text)]
-        public string Photos { get; set; }
-
-        [Display(Name = "Post video")]
-        [DataType(DataType.Text)]
-        public string Video { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
 

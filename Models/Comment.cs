@@ -17,12 +17,13 @@ namespace ShaulisBlog.Models
             countIDs++;
         }
 
-        // [HiddenInput(DisplayValue = false)]
+       
         [ConcurrencyCheck]
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+       // [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CommentID { get; set; }
 
-       //[ForeignKey("Post.PostID")]
+        //[ForeignKey("Post.PostID")]
         public int PostID { get; set; }
 
         [Display(Name = "Comment title")]
@@ -47,8 +48,6 @@ namespace ShaulisBlog.Models
         [ConcurrencyCheck]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CommentDate { get; set; }
-
-        public virtual Post CommentPost { get; set; }
 
     }
 }
