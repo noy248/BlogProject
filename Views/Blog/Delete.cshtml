@@ -1,4 +1,4 @@
-@model ShaulisBlog.Models.Comment
+@model TryAgain.Models.Comment
 
 @{
     ViewBag.Title = "Delete";
@@ -22,11 +22,12 @@
         </article>
     </section>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect" /> 
+            <input type="submit" value="Delete" class="mdl-button mdl-js-button mdc-button--dense	 mdl-js-ripple-effect" />
         </div>
     }
 </div>
